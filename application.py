@@ -19,7 +19,19 @@ def index():
 @app.route('/predict', methods=['GET','POST'])
 def predict():
     if request.method == 'POST':
-        pass
+        Temperature = float(request.form['Temperature'])
+        RH = float(request.form['RH'])
+        Ws = float(request.form['Ws'])
+        Rain = float(request.form['Rain'])
+        FFMC = float(request.form['FFMC'])
+        DMC = float(request.form['DMC'])
+        ISI = float(request.form['ISI'])
+        Classes = request.form['Classes']
+        Region = request.form['Region']
+        new_data = standard_scaler.transform([[Temperature, RH, Ws, Rain, FFMC, DMC, ISI, Classes, Region]])
+        result = ridge_model.predict(new_data)
+        return render_template('home.html', result=result[0])
+        
     else:
         return render_template('home.html')
     
